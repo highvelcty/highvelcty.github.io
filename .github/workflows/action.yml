@@ -22,10 +22,8 @@ jobs:
       - name: Build static files
         id: build
         run: |
-          # <Not provided for brevity>
-          # At a minimum this step should build the static files of your site
-          # <Not provided for brevity>
-          echo "emey was here"
+          mkdir build
+          echo "hello from a full build" > build/index.html
 
       - name: Upload static files as artifact
         id: deployment
