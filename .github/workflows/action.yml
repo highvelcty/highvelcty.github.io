@@ -22,6 +22,7 @@ jobs:
       - name: Build static files
         id: build
         run: |
+          source make_venv.sh
           mkdir build
           echo "hello from a full build" > build/index.html
 

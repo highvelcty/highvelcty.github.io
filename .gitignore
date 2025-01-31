@@ -1,0 +1,9 @@
+# Compiled python
+*.pyc
+
+# Build, distribution, virtual environment
+build/
+venv/
+
+# IDE
+.idea
