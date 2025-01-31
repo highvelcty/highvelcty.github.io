@@ -23,8 +23,7 @@ jobs:
         id: build
         run: |
           source make_venv.sh
-          mkdir build
-          echo "hello from a full build" > build/index.html
+          make
 
       - name: Upload static files as artifact
         id: deployment
