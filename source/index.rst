@@ -4,15 +4,23 @@ Hello!
 
 Welcome to my personal webpage. I am an electrical engineer who enjoys coding!
 
-My resume: :download:`Eric_Meyer_resume_2025.pdf <binary/Eric_Meyer_resume_2025.pdf>`.
+Projects
+--------
+
+- `Growbies <_static/growbies/index.html>`_
+
+
+Profile and Contact Information
+-------------------------------
+.. raw:: html
+
+    <hr>
+
+Resume: :download:`Eric_Meyer_resume_2025.pdf <binary/Eric_Meyer_resume_2025.pdf>`.
 
 Links:
     - `Github Profile <https://github.com/highvelcty>`_
     - `Linkedin Profile <https://www.linkedin.com/in/eric-meyer-5520a8197/>`_
-
-.. raw:: html
-
-    <hr>
 
 .. image:: binary/profile.jpg
     :alt: Profile picture of Eric Meyer from 2024.

@@ -1,3 +1,6 @@
 # This is a pip requirements file
+sphinx-rtd-theme
+sphinx-rtd-dark-mode
 sphinx
-groundwork-sphinx-theme
+
+-e growbies[DOCS]

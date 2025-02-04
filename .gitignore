@@ -1,6 +1,8 @@
 # Compiled python
 *.pyc
 
+source/_static/growbies/
+
 # Build, distribution, virtual environment
 build/
 venv/

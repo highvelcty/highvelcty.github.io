@@ -1,21 +1,40 @@
-SPHINXOPTS    ?=
-SPHINXBUILD   ?= sphinx-build
-SOURCEDIR     = source/
-BUILDDIR      = build/
+ SPHINXOPTS    ?=
+ SPHINXBUILD   ?= sphinx-build
 
-default: html
+ PATH_SOURCE 		 = source
+ PATH_SOURCE_STATIC  = source/_static/
+ PATH_GROWBIES 		 = source/_static/growbies/
+ PATH_GROWBIES_IDX   = source/_static/growbies/index.html
+ PATH_BUILD          = build/
+ PATH_GROWBIES_DOCS  = growbies/docs/
 
-builddir:
+ default: html
+
+ builddir:
 	( \
-	    mkdir -p ${BUILDDIR}; \
+		mkdir -p ${PATH_BUILD}; \
 	)
 
-clean:
+ clean:
 	( \
-	    rm -rf ${BUILDDIR}*; \
-	)
+ 	    rm -rf ${PATH_BUILD}*; \
+ 	    rm -rf ${PATH_GROWBIES}/*; \
+ 	    cd $(PATH_GROWBIES_DOCS) > /dev/null; \
+ 	    make clean; \
+ 	)
 
-html: builddir
+ html: builddir $(PATH_GROWBIES_IDX)
 	( \
-		$(SPHINXBUILD) -b html $(SOURCEDIR) $(BUILDDIR) $(SPHINXOPTS) $(O); \
-	)
+ 		$(SPHINXBUILD) -b html $(PATH_SOURCE) $(PATH_BUILD) $(SPHINXOPTS) $(O); \
+ 	)
+
+
+$(PATH_GROWBIES_IDX):
+	( \
+         pushd $(PATH_GROWBIES_DOCS) > /dev/null; \
+         make; \
+         popd > /dev/null; \
+         mkdir -p $(PATH_GROWBIES); \
+         cp -r $(PATH_GROWBIES_DOCS)/build/* $(PATH_GROWBIES); \
+     )
+
