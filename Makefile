@@ -1,12 +1,13 @@
  SPHINXOPTS    ?=
  SPHINXBUILD   ?= sphinx-build
 
- PATH_SOURCE 		 = source
- PATH_SOURCE_STATIC  = source/_static/
- PATH_GROWBIES 		 = source/_static/growbies/
- PATH_GROWBIES_IDX   = source/_static/growbies/index.html
- PATH_BUILD          = build/
- PATH_GROWBIES_DOCS  = growbies/docs/
+PATH_HERE   		= $(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
+PATH_SOURCE 		= source
+PATH_SOURCE_STATIC  = source/_static/
+PATH_GROWBIES 		= source/_static/growbies/
+PATH_GROWBIES_IDX   = source/_static/growbies/index.html
+PATH_BUILD          = build/
+PATH_GROWBIES_DOCS  = growbies/docs/
 
  default: html
 
@@ -31,10 +32,10 @@
 
 $(PATH_GROWBIES_IDX):
 	( \
-         pushd $(PATH_GROWBIES_DOCS) > /dev/null; \
+         cd $(PATH_GROWBIES_DOCS); \
          make; \
-         popd > /dev/null; \
+         cd $(PATH_HERE); \
          mkdir -p $(PATH_GROWBIES); \
-         cp -r $(PATH_GROWBIES_DOCS)/build/* $(PATH_GROWBIES); \
+         cp -r $(PATH_GROWBIES_DOCS)build/* $(PATH_GROWBIES); \
      )
 
