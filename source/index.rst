@@ -27,7 +27,7 @@ Links:
 
 .. line-block::
     Eric Meyer
-    Electrical Engineer / Software Development
+    Electrical Engineer / Coding
     phone: 720-308-1313
     email: ericallenmeyer@gmail.com
 
