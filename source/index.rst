@@ -4,10 +4,13 @@ Hello!
 
 Welcome to my personal webpage. I am an electrical engineer who enjoys coding!
 
+
 Projects
 --------
+.. toctree::
+    :maxdepth: 1
 
-- `Growbies <_static/growbies/index.html>`_
+    growbies
 
 
 Profile and Contact Information
