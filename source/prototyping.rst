@@ -70,8 +70,8 @@ The electronics:
 Testing
 -------
 
-Zero Offset Drift - Initial
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#1: Zero Offset Drift - Initial
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 This is some zero offset drift testing showing 120g of drift over about 11 hours. That's not
 good, I am engineering to +/- 5g for the long term time range.
 
@@ -86,8 +86,8 @@ environmental vibrations when compared to a distributed bridge scale architectur
 
 .. image:: binary/desk_vibrations.png
 
-Zero Offset Drift - Longer time
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#2: Zero Offset Drift - Longer time
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 More zero offset drift testing was performed. Still at 3.3V running to modified hx711 boards for
 2.7v excitation.
 
@@ -99,35 +99,64 @@ Loaded drift testing.
 
 These results were not good. The goal is for the error to not exceed +/- 5g due to drifting.
 
-5v drift
-~~~~~~~~
+#3: 5v drift
+~~~~~~~~~~~~
 The load cell excitation voltage was increased from 2.7v to 4.2v. Some improvement observed in
 zero offset drift for sensors 0,1 & 2. Sensor 3 is going way out of bounds.
 
 .. image:: binary/drift-5v.png
 
-Op-amp / ADC Check
-~~~~~~~~~~~~~~~~~~
+#4: Op-amp & ADC Check
+~~~~~~~~~~~~~~~~~~~~~~
 
-There are four parts that make up the mass sensing:
+In this test, the mass sensing is simplified to these four parts:
 
 .. image:: binary/mass_sensing-4_parts.png
 
-I wanted to see 3's voltage regulator might be causing drifting problems. I disconnected the
-excitation output for sensor 3, using sensor 2's differential signal as input to sensor's 3's
-op-amp/ADC.
+- #1: A voltage regulator driving the load cell sensor(s). There is an onboard 4.2 voltage
+  regulator included with the hx711 board.
+- #2: A load cell, please excuse the poor drawing :)
+- #3: Programmable gain op-amps. In this testing, only channel A, gain 128x is being tested.\
+- #4: A 24bit digital to analog converter output to
+  `bit-banging <https://en.wikipedia.org/wiki/Bit_banging>`_ serial.
+
+
+I would like to know what is wrong on with sensor #3. The four components were dissected in half.
+This was accomplished by
+
+- disconnecting sensor #3's load cell
+- connect sensor #2 load cell output to sensor #2 & #3 hx711 input.
+
+Shown below:
+
+.. image:: binary/dissected.png
+
 
 Here are the results:
 
 .. image:: binary/op_amp-adc-check.png
 
 The sensor 3 data matches sensor 2 data very well. This means that sensor 3 op amp & ADC are
-functioning the same as sensor 2's. It is unlikely that both sensor's op-amp/adc would be bad, so
-assume that sensor 3's op-amp/adc are functioning properly. A clue indicating that the sensor 3
-voltage regulator is what is drifting.
+functioning the same as sensor 2's. It is unlikely that both sensor's op-amp & ADC would be bad
+and behave identically, so assume that sensor 2 & 3's op-amp & ADC are functioning properly.
 
-Parallel HX711 voltage regulators
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+This indicates that the problem is in sensor #3's voltage regulator or load cell.
+
+#5: 1k ohm Resistor Wheatstone Bridge Stand-in
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A wheatstone bridge was built out of four 1k ohm resistors. It was then used in place of a load
+cell for sensor #3.
+
+.. image:: binary/resistor_standin.jpg
+
+The results were interesting. This is the first time I have tried to use static resistors as a
+stand in for a load cell. I'm not sure what to make of the data other than sensor #3 behaved
+erratically.
+
+.. image:: binary/resistor_standin.png
+
+#6: Parallel HX711 voltage regulators
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Next, the voltage regulators of all hx711 boards were ran in parallel.
 
 .. image:: binary/common_excitation_0.png
@@ -141,9 +170,66 @@ All of these are likely due to heating, either in the HX711 board or in the load
 
 .. image binary/common_excitation_1.png
 
+#7: Cross-swap Sensor #2 & #3 load cells
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The steep drift observed with sensor #3 stopped when sensor #2 & #3 load cells were swapped.
+Additionally, no problem found on sensor #2 with sensor #3's load cell.
+
+Noise observed on sensor 1.
+
+.. image:: binary/cross_swap_load_cell.png
+
+#8: Attempt to Repeat #6
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+The cross-swap from #7 was reverted. The attempt repeat the bad drift on sensor #3 observed in
+test #6 was made. The problem did not repeat.
+
+.. image:: binary/did_not_repeat.png
+
+I am not sure why the problem did not repeat. My leading hypothesis is a floating ground that
+was fixed during the cross-swap experiment.
+
+#9: Electrically sum differential signals from load cells at op-amp input
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Here, a single HX711 board is used with the load cell differential signals electrically summed,
+using an adder circuit.
+
+.. image:: binary/adder_circuit.png
+
+.. image:: binary/adder_circuit_physical.png
+
+`Reference <https://electronics.stackexchange
+.com/questions/358105/fully-differential-amplifier-adder>`_
+
+.. image:: binary/diff_signal_adder_zero_offset_drift_0.png
+
+Here is a longer test of the drift.
+
+.. image:: binary/diff_signal_adder_zero_offset_drift_1.png
+
+#10: AC excitation
+~~~~~~~~~~~~~~~~~~
+In this experiment, AC excitation as added. Similiar to experiment #9, 4x full bridge load cells
+were used along with a single HX711 board, where the signals are electrically summed at the
+op-amp input.
+
+A maximum drift of 31g was observed over 36 hours.
+
+.. image:: binary/ac_excitation_0.png
+
+I was hoping for more drift removal than what was observed. I suspect that the AC excitation is
+removing thermal drift from the strain gages. I suspect that the remaining observed drift is
+largely made up of physical deformation of the load cells due to temperature.
+
+References:
+
+- `Texas Instruments - A Basic Guide to Bridge Measurements <https://www.ti.com/lit/an/sbaa532a/sbaa532a.pdf?ts=1750655121715>`_
+- `Texas Instruments - Reduce Bridge Measurement Offset and Drift Using AC Excitation Mode <https://www.ti.com/lit/ab/sbaa290a/sbaa290a.pdf?ts=1750673756912&ref_url=https%253A%252F%252Fwww.google.com%252F>`_
+
 Next Steps & Ideas
 ------------------
-- Replace the faulty hx711 board
-- Explore the effect of adding capacitance to the parallel hx711 excitation.
+- Test a hair dryer
+- Explore the effect of adding capacitance to the parallel excitation.
 - Test hx711 parallel excitation at 3.3v
 - Try an external, common voltage regulator
