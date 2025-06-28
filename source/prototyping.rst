@@ -227,6 +227,22 @@ References:
 - `Texas Instruments - A Basic Guide to Bridge Measurements <https://www.ti.com/lit/an/sbaa532a/sbaa532a.pdf?ts=1750655121715>`_
 - `Texas Instruments - Reduce Bridge Measurement Offset and Drift Using AC Excitation Mode <https://www.ti.com/lit/ab/sbaa290a/sbaa290a.pdf?ts=1750673756912&ref_url=https%253A%252F%252Fwww.google.com%252F>`_
 
+#12: Temperature HX711 Channel B
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A load cell was wired to sensor #1's HX711 channel B input. The load cell was mounted in a way to
+minimize any stress induced variances. With this, it is intended to serve as a temperature
+reference for the weigh scale.
+
+Here is the hardware configuration:
+
+.. image:: binary/4x_loadcell-1x_temp_b.png
+
+A problem was encountered in which the channel A signal was affecting the channel B signal. In
+fact, the signal from A was greater orders of magnitude than approximately a 1kg load placed on
+the channel B load cell.
+
+.. image:: binary/4x_loadcell-1x_temp_b_data.png
+
 Next Steps & Ideas
 ------------------
 - Test a hair dryer
