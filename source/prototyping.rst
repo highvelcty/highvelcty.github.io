@@ -99,7 +99,7 @@ Loaded drift testing.
 
 These results were not good. The goal is for the error to not exceed +/- 5g due to drifting.
 
-#3: 5v drift
+#3: 5v Drift
 ~~~~~~~~~~~~
 The load cell excitation voltage was increased from 2.7v to 4.2v. Some improvement observed in
 zero offset drift for sensors 0,1 & 2. Sensor 3 is going way out of bounds.
@@ -119,7 +119,6 @@ In this test, the mass sensing is simplified to these four parts:
 - #3: Programmable gain op-amps. In this testing, only channel A, gain 128x is being tested.\
 - #4: A 24bit digital to analog converter output to
   `bit-banging <https://en.wikipedia.org/wiki/Bit_banging>`_ serial.
-
 
 I would like to know what is wrong on with sensor #3. The four components were dissected in half.
 This was accomplished by
@@ -155,7 +154,7 @@ erratically.
 
 .. image:: binary/resistor_standin.png
 
-#6: Parallel HX711 voltage regulators
+#6: Parallel HX711 Voltage Regulators
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Next, the voltage regulators of all hx711 boards were ran in parallel.
 
@@ -190,8 +189,8 @@ test #6 was made. The problem did not repeat.
 I am not sure why the problem did not repeat. My leading hypothesis is a floating ground that
 was fixed during the cross-swap experiment.
 
-#9: Electrically sum differential signals from load cells at op-amp input
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#9: Electrically Sum Load Cells
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Here, a single HX711 board is used with the load cell differential signals electrically summed,
 using an adder circuit.
 
@@ -202,13 +201,16 @@ using an adder circuit.
 `Reference <https://electronics.stackexchange
 .com/questions/358105/fully-differential-amplifier-adder>`_
 
+For four wheatstone bridge sensors and from experimentation, the resistors shown above and in the
+schematic were not needed.
+
 .. image:: binary/diff_signal_adder_zero_offset_drift_0.png
 
 Here is a longer test of the drift.
 
 .. image:: binary/diff_signal_adder_zero_offset_drift_1.png
 
-#10: AC excitation
+#10: AC Excitation
 ~~~~~~~~~~~~~~~~~~
 In this experiment, AC excitation as added. Similiar to experiment #9, 4x full bridge load cells
 were used along with a single HX711 board, where the signals are electrically summed at the
@@ -238,14 +240,130 @@ Here is the hardware configuration:
 .. image:: binary/4x_loadcell-1x_temp_b.png
 
 A problem was encountered in which the channel A signal was affecting the channel B signal. In
-fact, the signal from A was greater orders of magnitude than approximately a 1kg load placed on
-the channel B load cell.
+fact, the signal from A was greater, by orders of magnitude, than the approximately 1kg load
+placed on the channel B load cell.
 
 .. image:: binary/4x_loadcell-1x_temp_b_data.png
 
-Next Steps & Ideas
-------------------
-- Test a hair dryer
-- Explore the effect of adding capacitance to the parallel excitation.
-- Test hx711 parallel excitation at 3.3v
-- Try an external, common voltage regulator
+#13: Temperature with Dedicated HX711
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The same hardware was used from experiment #12. This time, The four load cells were summed
+electrically at the input of sensor 1. The reference temperature load cell was input to its own
+HX711 board, sensor 0.
+
+The fixture was placed on a 3D printer heat bed. The temperature was cycle between approximately
+22*C and 50*C.
+
+.. image:: binary/load_cell_as_temperature_sensor_0.png
+
+Here is a temperature (DAC) vs mass (grams) plot. Whoa, that's a pretty cool plot. That's all
+sorts of unpredictable though. I don't think it will be practical to use an auxiliary load cell
+for temperature sensing.
+
+.. image:: binary/load_cell_as_temperature_sensor_1.png
+
+#14: Mass & Temperature Planar Load Cell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A meat thermometer was used as a temperature sensor in an attempt to correlate temperature with
+mass.
+
+First, the resistance/temperature response needed to be determined for the temperature probe.
+
+.. image:: binary/probe_temperature_response.png
+
+Next, the temperature vs. resistance is plotted and a line of best fit analysis is made.
+
+.. image:: binary/probe_temperature_resistance_response.png
+
+From the R^2 value, it looks like the power curve fits the best.
+
+The probe was then put into a voltage divider circuit, shown in the circuit as R2. R2
+represents the temperature probe.
+
+.. image:: binary/voltage_divider_and_equation.png
+
+R1 needs to be selected in a way to most fully use the Arduino analog input range [0,3.3] volts
+in this case.
+
+.. image:: binary/probe_R1_optimization.png
+
+40 kohm was chosen. I think the the closest I had on hand was 44 kohm or so.
+
+Finally, the same correlation was made, except this time temperature \*F vs. digital to analog
+converted (DAC) value.
+
+.. image:: binary/probe_temperature_dac_response.png
+
+This time R^2 shoes a linear fit to be best. Placing the probe into a voltage divider linearized
+the output, sweet!
+
+
+Here is the fixture for mass & temperature over time for an unloaded planar, full-bridge load
+cell.
+
+.. image:: binary/unconstrained_planar_temp_mass.png
+
+3x thermal cycling [22*C, 50*C] test data:
+
+.. image:: binary/planar_unconfined_mass_temp_over_time.png
+
+The total change in mass was about (-60, 20) grams.
+
+.. image:: binary/planar_unconfined_temperature_vs_mass.png
+
+The arrows in the plat above indicate which direction the temperature is going. There is
+hysteresis when going up/down in temperature. There are also hystereses observed when going in
+just one direction in temperature. The width of the hysteresis was 80 grams.
+
+The implications of this is that the mass of something being weighed can only be known to [-60,
+20] grams. It would be difficult to correct the mass output with temperature sensing due to the
+multiple hystereses and general non-repeatable nature.
+
+#15: Mass & Temperature Single-ended Shear Beam Load Cell
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The following fixture was constructed and placed on a 3D printer heat bed for thermal
+conditioning testing. The probe was taped to the non-load bearing side of the load cell with
+copper tape to try to thermally couple the two.
+
+.. image:: binary/shear_beam_thermal_test_fixture.png
+
+The fixture was thermally cycled between [70, 120] \*F, approximately, three times.
+
+.. image:: binary/unloaded_shear_beam_temperature_mass_over_time.png
+
+.. image:: binary/unloaded_shear_beam_temperature_vs_mass.png
+
+The total drift in mass was [2, -31] grams. There was hysteresis when going up/down in
+temperature. The width of the hysteresis was approximately 5-7 grams.
+
+The same test was performed, this time with a 798 gram load using quarters and coffee coasters. The
+intent is to see if the load cell responds to temperature differently when loaded.
+
+.. image:: binary/loaded_shear_beam_thermal_test_fixture.png
+
+The fixture was thermally cycled between [70, 120] \*F, approximately, three times.
+
+.. image:: binary/loaded_shear_beam_temperature_mass_over_time.png
+
+.. image:: binary/loaded_shear_beam_temperature_vs_mass.png
+
+The total drift in mass observed was again, about [2,-32] grams. The width of the hysteresis
+about 5-7 grams.
+
+**Summary:**
+
+The single-ended shear beam load cell responds to environmental temperature in a more predictable
+way than the planar load cell. This is likely due to complexities introduced in the strain field
+by multiple axis of warping in the planar cell. The shear beam has a simpler strain field that is
+more predictable with temperature changes.
+
+I am wondering how much of the non-repeatable, unpredictable, non-linearities could be eliminated
+with a thermistor embedded into the metal of the load cell. The thermal response of the probe and
+the load cell are likely different. In this experiment, they were marginally thermally coupled
+using copper tape.
+
+From these findings, the Growbies effort is going to shift to implementing a single-ended shear
+beam with an integrated thermistor. Temperature correction will be made. This will provide lower
+thermal drift error rates. This is important when trying to keep track of a plant growing in a
+container over long periods of time with varying environmental temperatures.
+
