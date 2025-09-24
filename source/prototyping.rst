@@ -4,7 +4,7 @@ Prototyping (June 2025)
 An evolution of prototyping.
 
 Prototype #1
-------------
+************
 The blue board is an Arduino mini pro 3v3. The red board is an FTDI 232RL USB<->UART board.
 
 .. image:: binary/growbies_bug.jpg
@@ -51,7 +51,7 @@ before the LCD display could be made functional.
 .. image:: binary/proto1_3.jpg
 
 Prototype #2
-------------
+************
 Functional OLED LCD. Simplified controls.
 
 .. image:: binary/proto2_0.jpg
@@ -366,4 +366,59 @@ From these findings, the Growbies effort is going to shift to implementing a sin
 beam with an integrated thermistor. Temperature correction will be made. This will provide lower
 thermal drift error rates. This is important when trying to keep track of a plant growing in a
 container over long periods of time with varying environmental temperatures.
+
+Prototype #3
+************
+The mechanics:
+
+- 10" circle
+- shear beam load cells with aluminum mounts
+- 3D printed PLA
+
+The electronics:
+
+- esp32c3
+- FTDI 232RL USB <-> UART
+- 4x HX711
+
+.. image:: binary/proto3_1.jpg
+
+.. image:: binary/proto3_2.jpg
+
+.. image:: binary/proto3_3.jpg
+
+.. image:: binary/proto3_4.jpg
+
+.. image:: binary/proto3_5.jpg
+
+Testing
+-------
+
+#1: Corrected and Calibrated Zero Offset Drift
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Here is a thermal test of the prototype after it has been temperature corrected and calibrated.
+The units are a bit confusing on the plot. The individual mass sensors are in units of DAC. The
+red, mass total, is in units of grams.
+
+The thermistors are in units of DAC. This test is varying the temperature through the range of
+[25*C, 65*C] approximately.
+
+Here we can see the temperature varying over time and the per sensor mass varying with temperature.
+
+.. image:: binary/prototype_3-masstemp-time.png
+
+Here is a zoomed in (y-axis) to see how much the total mass is drifting during the course of the
+thermal cycling. Approximately +/- 15 grams.
+
+.. image:: binary/prototype_3-masstemp-time-zoom_in.png
+
+This is another look at the same data. This time mass is plotted against temperature. We see that
+there is hysteresis in the per sensor mass output.
+
+.. image:: binary/prototype_3-mass_vs_temp.png
+
+A zoomed in view of above. Again, we see approximately +/- 15 grams of error corrected and
+calibrated mass.
+
+.. image:: binary/prototype_3-mass_vs_temp-zoom_in.png
 
