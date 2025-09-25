@@ -389,8 +389,6 @@ The electronics:
 
 .. image:: binary/proto3_4.jpg
 
-.. image:: binary/proto3_5.jpg
-
 Testing
 -------
 
@@ -422,3 +420,42 @@ calibrated mass.
 
 .. image:: binary/prototype_3-mass_vs_temp-zoom_in.png
 
+Growing
+-------
+
+#1: 10" x 10" tray of lettuce
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In this experiment, lettuce will be grown on top of the device for continuous data collection.
+
+Shown below is the setup. This was taken mid-experiment.
+
+.. image:: binary/proto3_5.jpg
+
+Shown below is mass & temperature over time. There is lots of noise on temperature sensor 2 with
+fluorescent lights. Then, the noise is reduced on transition to LED lights. Sensor 2 did not have
+shielding on the single-ended thermistor wiring. It is interesting to see the susceptibility to
+noise and the reduction with shielding.
+
+ .. image:: binary/prototype_3-masstemp-time-lettuce-annotated.png
+
+The end result of this experiment was, sadly, that the entire tray of lettuce died. Heh, I wish I
+had taken a picture, but I was annoyed enough to not think of it...:)
+
+Anyways, I think the plant got overwhelmed with light on transition to LEDs. I went from 8
+fluorescent tubes, to 8 led tubes. Since this experiment, I have reduced the length
+of light and the quantity of light. Now the plants are much happier.
+
+Additionally, we were out of town for a few days around the time of the communication outage.
+This, combined with the lighting misconfiguration was more than the poor lettuce plants could
+handle.
+
+Here is a zoomed in version of the above plot, focusing only on total mass.
+
+.. image:: binary/prototype_3-masstemp-time-lettuce-zoom_in-annotated.png
+
+Even though the results were not what I was hoping for (great lettuce), there is value here. From
+the data we better understand where things started to go poorly from the association made with
+the data.
+
+I hope that the data growbies collects and the analysis thereof will help solve problems like
+these.
