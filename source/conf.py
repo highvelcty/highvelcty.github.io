@@ -6,8 +6,8 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Eric Meyer (highvelcty)'
-copyright = '2025, Eric Meyer'
+project = 'Growbies'
+copyright = '2026, Eric Meyer'
 author = 'Eric Meyer'
 
 # -- General configuration ---------------------------------------------------
@@ -22,5 +22,3 @@ exclude_patterns = []
 html_theme = 'sphinx_rtd_theme'
 extensions = ['sphinx_rtd_dark_mode']
 default_dark_mode = True
-
-html_static_path = ['_static']
