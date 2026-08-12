@@ -24,12 +24,10 @@ extensions = ['sphinx_rtd_dark_mode', 'sphinx_sitemap']
 default_dark_mode = True
 
 html_baseurl = 'https://docs.growbies.net/'
-html_file_suffix = ''
-html_link_suffix = ''
 
 sitemap_excludes = [
-    'search',
-    'genindex',
-    'index'
+    'search.html',
+    'genindex.html',
+    'index.html'
 ]
 sitemap_url_scheme = '{link}'
