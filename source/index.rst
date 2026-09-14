@@ -19,6 +19,10 @@ Stories
 -------
 
 .. toctree::
-    velostat
-    4xfullbridge
+    :maxdepth: 1
+
+    2026_09_growing
     prototyping
+    4xfullbridge
+    velostat
+
