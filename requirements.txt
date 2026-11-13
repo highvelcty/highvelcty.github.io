@@ -1,6 +1,5 @@
 # This is a pip requirements file
-sphinx-rtd-theme
-sphinx-rtd-dark-mode
+furo
 sphinx-sitemap
 sphinx
 

@@ -19,8 +19,8 @@ exclude_patterns = []
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
-extensions = ['sphinx_rtd_dark_mode', 'sphinx_sitemap']
+html_theme = 'furo'
+extensions = ['sphinx_sitemap']
 default_dark_mode = True
 
 html_baseurl = 'https://docs.growbies.net/'
