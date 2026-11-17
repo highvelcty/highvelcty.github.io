@@ -1,28 +1,19 @@
 SPHINXOPTS ?=
 SPHINXBUILD ?= sphinx-build
 
-PATH_SOURCE = growbies/docs/source
-PATH_BUILD  = build
+PATH_BUILD = build
 
-default: html
+default: multihtml
 
-.PHONY: default clean html multihtml
+.PHONY: default clean multihtml
 
 clean:
 	rm -rf $(PATH_BUILD)
 
-html:
-	$(MAKE) -C growbies/docs html \
+multihtml:
+	$(MAKE) -C growbies/docs multihtml \
 		BUILDDIR="$(abspath $(PATH_BUILD))/" \
-		DOCSDIR="$(abspath $(PATH_BUILD))/docs/" \
 		SPHINXOPTS="$(SPHINXOPTS)" \
 		SPHINXBUILD="$(SPHINXBUILD)" \
 		O="$(O)"
 
-multihtml:
-	$(MAKE) -C growbies/docs multihtml \
-		BUILDDIR="$(abspath $(PATH_BUILD))/" \
-		DOCSDIR="$(abspath $(PATH_BUILD))/docs/" \
-		SPHINXOPTS="$(SPHINXOPTS)" \
-		SPHINXBUILD="$(SPHINXBUILD)" \
-		O="$(O)"
