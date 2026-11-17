@@ -1,6 +1,2 @@
 # This is a pip requirements file
-furo
-sphinx-sitemap
-sphinx
-
 -e growbies[DOCS]
